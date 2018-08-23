@@ -9,13 +9,9 @@ class Card extends React.Component {
 
     clickHandler(event) {
         if (this.state.view === 'points') {
-            setTimeout(() => {
-                if (this.state.view === "question") {
-                }
-            }, 1800);
-            this.setState({view: 'question', flipping: true});
-        } else if (this.state.view === 'question') {
-            this.setState({view: 'answer'});
+            this.setState({view: 'answer', flipping: true});
+        } else if (this.state.view === 'answer') {
+            this.setState({view: 'question'});
         } else {
             this.setState({view: 'points', completed: true, flipping: true});
         }
@@ -38,7 +34,7 @@ class Card extends React.Component {
                 transform: 'translate3d(' + this.props.left + 'px,' + this.props.top + 'px,0)',
                 WebkitTransform: 'translate3d(' + this.props.left + 'px,' + this.props.top + 'px,0)'
             },
-            front = this.state.completed ? <img src='assets/img/react.svg'/> : <span className='points'>{this.props.question.points}</span>,
+            front = this.state.completed ? <h5>-</h5> : <span className='points'>{this.props.question.points}</span>,
             className = 'flipper';
 
         if (this.state.view !== 'points') {
@@ -55,7 +51,7 @@ class Card extends React.Component {
                     </div>
                     <div className='back'>
                         <span dangerouslySetInnerHTML={this.getLabelBack()}/>
-                        <img src='assets/img/react.svg'/>
+                       
                     </div>
                 </div>
             </div>

@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Card from '../components/Card';
-import Headers from '../components/Headers';
-import {data} from '../data';
+import {questions} from '../questions';
 
 class App extends React.Component {
 
@@ -11,7 +10,7 @@ class App extends React.Component {
         this.state = {
             windowWidth: window.innerWidth,
             windowHeight: window.innerHeight,
-            data: []
+            questions: []
         };
     }
 
@@ -26,12 +25,12 @@ class App extends React.Component {
     componentDidMount() {
         window.addEventListener('resize', this.handleResize.bind(this));
         let rows = 0;
-        data.forEach(category => {
+        questions.forEach(category => {
             if (category.questions.length > rows) {
                 rows = category.questions.length;
             }
         });
-        this.setState({data: data, rows: rows, cols: data.length});
+        this.setState({questions: questions, rows: rows, cols: questions.length});
     }
 
 
@@ -43,17 +42,24 @@ class App extends React.Component {
         let headerHeight = this.state.windowWidth > 640 ? 60 : 32,
             cardWidth = this.state.windowWidth / this.state.cols,
             cardHeight = (this.state.windowHeight - headerHeight) / this.state.rows,
-            cards = [];
+            cards = [],
+            title = [];
 
-        this.state.data.forEach((category, categoryIndex) => {
+        this.state.questions.forEach((category, categoryIndex) => {
             let left = categoryIndex * cardWidth;
             category.questions.forEach((question, questionIndex) => {
                 cards.push(<Card left={left} top={questionIndex * cardHeight + headerHeight} height={cardHeight} width={cardWidth} question={question} key={categoryIndex + '-' + questionIndex}/>);
             })
         });
+        
+
+        questions.forEach((c, i) => title.push(<span className='header' style={{width : cardWidth}} key={i}>{c.category}</span>));
+        
         return (
             <div>
-                <Headers data={this.state.data} headerWidth={cardWidth}/>
+                <div className='headers'>
+                    {title}
+                </div>
                 {cards}
             </div>
         );
