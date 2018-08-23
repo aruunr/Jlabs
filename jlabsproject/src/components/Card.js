@@ -1,15 +1,67 @@
 import React from 'react';
 
-const Card = (props) => {
-return (
-    <div className='bg-light-green dib br3 pa3 ma2 grow bw2 shadow-5'>
-        <img alt='photo' src={ `https://robohash.org/${props.id}?100x100`}/>    
-    <div>      
-        <h3>{props.name}</h3>
-        <p>{props.email}</p>
-    </div>   
-    </div>
-);
-}
+class Card extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {view: 'points', completed: false};
+    }
+
+    clickHandler(event) {
+        if (this.state.view === 'points') {
+            setTimeout(() => {
+                if (this.state.view === "question") {
+                }
+            }, 1800);
+            this.setState({view: 'question', flipping: true});
+        } else if (this.state.view === 'question') {
+            this.setState({view: 'answer'});
+        } else {
+            this.setState({view: 'points', completed: true, flipping: true});
+        }
+    }
+
+    getLabelBack() {
+        return {__html: this.state.view === 'question' ? this.props.question.question : this.props.question.answer};
+    }
+
+    transitionEndHandler(event) {
+        if (event.propertyName === 'width') {
+            this.setState({flipping: false});
+        }
+    }
+
+    render() {
+        let style = {
+                width: this.props.width + 'px',
+                height: this.props.height + 'px',
+                transform: 'translate3d(' + this.props.left + 'px,' + this.props.top + 'px,0)',
+                WebkitTransform: 'translate3d(' + this.props.left + 'px,' + this.props.top + 'px,0)'
+            },
+            front = this.state.completed ? <img src='assets/img/react.svg'/> : <span className='points'>{this.props.question.points}</span>,
+            className = 'flipper';
+
+        if (this.state.view !== 'points') {
+            className = className + ' flipped';
+        }
+        if (this.state.flipping) {
+            className = className + ' flipping';
+        }
+        return (
+            <div style={style} className={className} onClick={this.clickHandler.bind(this)} onTransitionEnd={this.transitionEndHandler.bind(this)}>
+                <div className='card'>
+                    <div className='front'>
+                        {front}
+                    </div>
+                    <div className='back'>
+                        <span dangerouslySetInnerHTML={this.getLabelBack()}/>
+                        <img src='assets/img/react.svg'/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+};
 
 export default Card;

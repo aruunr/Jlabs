@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/aruunr/Jlabs/issues"
   },
-  "homepage": "https://github.com/aruunr/Jlabs#readme"
+  "homepage": "https://github.com/aruunr/Jlabs#readme",
+  "dependencies": {
+    "codemirror": "^5.39.2",
+    "jquery": "^3.3.1"
+  }
 }
